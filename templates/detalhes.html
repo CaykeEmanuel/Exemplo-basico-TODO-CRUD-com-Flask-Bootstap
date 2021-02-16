@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+detalhes
+{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-5 col-md-12">
+        <div class="row">
+            <div style="border-radius: 20px;border: 2px solid rgb(121, 121, 121)">
+                <a class="btn btn-danger mt-5 mb-5 mx-3">Voltar</a>
+                {% for coluna in banco %}
+                    <h1 class="display-2">{{coluna.nota}}</h1>
+                    <h2 class="display-3 mt-5">{{coluna.descr}}</h2>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
