@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from sqlalchemy import create_engine, text
 import datetime
 
@@ -29,10 +29,9 @@ def detalhes(nota):
     banco = engine.execute(text("SELECT * FROM Todo_list WHERE nota=:n;"), {'n':nota}).fetchall()
     return render_template('detalhes.html', banco=banco)
 
-@app.route("/delete/<nota>")
-def delete(nota):
-    
-    engine.execute(text("DELETE FROM Todo_list WHERE nota=:n;"), {'n':nota})
+@app.route("/delete/<int:id>")
+def delete(id):
+    engine.execute(text("DELETE FROM Todo_list WHERE id=:n;"), {'n':id})
     banco = engine.execute(text("SELECT * FROM Todo_list;"))
     return render_template('index.html', banco=banco)
 
