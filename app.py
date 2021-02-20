@@ -54,6 +54,20 @@ def detail(id):
     nota = Todo.query.get_or_404(id)
     return render_template('detail.html',banco=nota)
 
+@app.route('/edit/<int:id>', methods=['POST','GET'])
+def edit(id):
+    if request.method == 'POST':
+        nota = request.form['nota']
+        descr = request.form['descr']
+        nota_atualizada = Todo(nota=nota, descr=descr)
+        db.session.add(nota_atualizada)
+        db.session.commit()
+        nota = Todo.query.get_or_404(id)
+        return render_template('detail.html', banco=nota)
+    else:
+        nota = Todo.query.get_or_404(id)
+        return render_template('edit.html',banco=nota)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

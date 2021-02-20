@@ -14,11 +14,11 @@
         <div class="row" style="height:50vh;">
 
             <div>
-
-                    <h1>{{banco.nota}}</h1>
+                <form action="/edit" method="POST">
+                    <input type="text" value="{{banco.nota}}" name="nota">
                     <hr>
-                    <p>{{banco.descr}}</p>
-
+                    <textarea class="form-control" rows="4" name="descr">{{banco.descr}}</textarea>
+                
             </div>
         </div>
         <div class="row mt-5">
@@ -26,8 +26,9 @@
 
                 <p class="display-5">{{banco.topico}} / {{banco.prazo}}</p>
                 
-                <a class="btn btn-lg btn-success" href="/edit/{{banco.id}}">Editar</a>
+                <button class="btn btn-lg btn-success" href="/edit/{{banco.id}}" type="submit">Concluir</button>
                 <a type="button" class="btn btn-danger btn-lg" href="/delete/{{banco.id}}">Deletar</a>
+            </form>
             </div>
         </div>
     </div>
