@@ -24,14 +24,14 @@
                             <tbody>
                                 <td>Topico:</td>
                                 <td>
-                                    <select class="form-select form-select-md mb-3 bg-primary">
+                                    <select class="form-select form-select-md mb-3 bg-primary" name="topico">
                                     <option selected value="Estudo">Estudo</option>
                                     <option value="Lazer">Lazer</option>
                                     <option value="Trabalho">Trabalho</option>
                                     <option value="Outros">Outros</option>
                                   </select></td>
                                 <td>Prazo:</td>
-                                <td><select class="form-select form-select-md mb-3" aria-label=".form-select-lg example">
+                                <td><select class="form-select form-select-md mb-3" aria-label=".form-select-lg example" name="prazo">
                                     <option selected value="Hoje">Hoje</option>
                                     <option value="Daqui um dia">Daqui um dia</option>
                                     <option value="Daqui dois dias">Daqui dois dias</option>
@@ -49,6 +49,36 @@
                     </div>
 
                 </form>
+            </div>
+
+            <div class="col-md-7 col-sm-12">
+                <ul class="list-group mt-3">
+                {% if banco|length < 1 %}
+                    <h1 class="display-4" style="color:blue; text-align: center;">Não Existem dados</h1>
+                {% else %}
+
+                    {% for item in banco %}        
+                    <li class="list-group-item {{item.status}}">
+                        <table class="table">
+    
+                            <td class="col-md-3 col-sm-3">{{item.nota}}</td>
+                            <td class="col-md-1 col-sm-2">{{item.topico}}</td>
+                            <td class="col-md-1 col-sm-1">{{item.prazo}}</td>
+    
+                            <td class="col-md-1 col-sm-2"><a type="button" class="btn btn-primary ml-2" href="/detail/{{item.id}}">Detalhes</a></td>
+    
+                            <td  class="col-md-1 col-sm-2"><a type="button" class="btn btn-danger mr-2" href="/delete/{{item.id}}">Deletar</a></td>
+    
+    
+    
+                        </table>
+    
+                    </li>
+    
+                    {% endfor %}
+                    
+                </ul>
+                {% endif %}
             </div>
         </div>
     </div>

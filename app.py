@@ -14,6 +14,8 @@ class Todo(db.Model):
     topico = db.Column(db.String(9), nullable=False)
     prazo = db.Column(db.String(20), nullable=False)
     data_pub = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    def __repr__(self):
+        return '<Note %r>' % self.nota
 
 
 @app.route('/', methods=['GET','POST'])
@@ -34,7 +36,23 @@ def index():
     else:
         banco = Todo.query.order_by(Todo.data_pub).all()
         return render_template('index.html',banco=banco)
-    
+
+
+@app.route('/delete/<int:id>')
+def delete(id):
+    dado_a_deletar = Todo.query.get_or_404(id)
+
+    try:
+        db.session.delete(dado_a_deletar)
+        db.session.commit()
+        return redirect('/')
+    except:
+        return 'dado não encontrado'
+
+@app.route('/detail/<int:id>')
+def detail(id):
+    nota = Todo.query.get_or_404(id)
+    return render_template('detail.html',banco=nota)
 
 
 if __name__ == "__main__":
