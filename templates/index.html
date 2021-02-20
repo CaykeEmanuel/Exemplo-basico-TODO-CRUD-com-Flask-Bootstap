@@ -1,122 +1,55 @@
 {% extends 'layout.html' %}
 
-{% block title %} Todo list {% endblock %}
+{% block head %}
+
+{% endblock %}
 
 {% block body %}
-
-
-
-
     <div class="container-fluid mt-5">
-
         <div class="row">
+            <div class="col-md-5 col-sm-12">
+                <form class="form-group" action="/" method="POST">
+                    <div>
+                        <h1 class="display-2">Registro</h1>
+                        <label class="form-text">Digite a sua nota</label>
+                        <input class="form-control" name="nota" id="nota">
+                    </div>
+                    <div>
+                        <label class="form-text">Descricao</label>
+                        <textarea class="form-control" id="descr" name="descr" rows="4"></textarea>
+                    </div>
 
-            <div class="registro col-md-5 col-sm-12 ">
+                    <div>
+                        <table class="table">
+                            <tbody>
+                                <td>Topico:</td>
+                                <td>
+                                    <select class="form-select form-select-md mb-3 bg-primary">
+                                    <option selected>Estudo</option>
+                                    <option value="1">Lazer</option>
+                                    <option value="2">Trabalho</option>
+                                    <option value="3">Outros</option>
+                                  </select></td>
+                                <td>Prazo:</td>
+                                <td><select class="form-select form-select-md mb-3" aria-label=".form-select-lg example">
+                                    <option selected>Hoje</option>
+                                    <option value="1">Daqui um dia</option>
+                                    <option value="2">Daqui dois dias</option>
+                                    <option value="3">Daqui uma semana</option>
+                                    <option value="3">Daqui duas semanas</option>
+                                    <option value="3">Daqui um mes</option>
+                                    <option value="3">Mais de um mes</option>
+                                  </select></td>
 
-                <form class="form-group" action="{{url_for('adding')}}" method="POST">
-
-                    <label class="display-3 mb-3">Registro</label>
-
-                    <div class="form-text">Digite aqui a sua tarefa</div>
-
-                    <input type="text" class="form-control" name="nota">
-
-                        
-
-                    <table class="table">
-                        <td class=" col-md-2">
-
-                            <select class="form-select list-group-item-primary color-dark" label="topico" name="topico">
-
-                            <option value="Estudo">Estudo</option>
-
-                            <option value="Trabalho">Trabalho</option>
-
-                            <option value="Lazer">Lazer</option>
-
-                            <option value="Descanso">Descanso</option>
-
-                            <option value="Social">Social</option>
-
-                            </select>
-
-                        </td>
-
-                        <td class="col-md-4">
-                            <select class="form-select list-group-item-primary color-dark" label="topico" name="prazo">
-
-                                <option value="Hoje">Pra hoje</option>
-
-                                <option value="Daqui a um dia">Daqui a um dia</option>
-
-                                <option value="Daqui a dois dias">Daqui a dois dias</option>
-
-                                <option value="Daqui uma semana">Daqui uma semana</option>
-
-                                <option value="Daqui a duas semanas">Daqui a duas semanas</option>
-
-                                <option value="Daqui a um mês">Daqui a um mês</option>
-
-                                <option value="Mais que um mês">Mais que um mês</option>
-
-                            </select>
-
-                        </td>
-
-
-                        <td class="col-md-4 ml-5">
-
-                            <button type="submit" class="btn btn-primary">Adicionar</button>
-
-                        </td>
-
-                        <tr>
-
-                            <div class="mb-3 mt-2">
-
-                                <label class="form-label">Descrição</label>
-
-                                <textarea class="form-control" id="area_descricao" rows="4" name="descr"></textarea>
-
-                            </div>
-
-                        </tr>
-
-                    </table>
-
+                                  <td>
+                                      <input class="btn btn-primary" type="submit" value="Enviar">
+                                  </td>
+                            </tbody>
+                        </table>
+                    </div>
 
                 </form>
-
             </div>
-
-            <div class="lista col-md-7 col-sm-12 mt-4">
-               <ul class="list-group mt-3">
-                {% for item in banco %}        
-                <li class="list-group-item {{item.status}}">
-                    <table class="table">
-
-                        <td class="col-md-3 col-sm-3">{{item.nota}}</td>
-                        <td class="col-md-1 col-sm-2">{{item.topico}}</td>
-                        <td class="col-md-1 col-sm-1">{{item.prazo}}</td>
-
-                        <td class="col-md-1 col-sm-2"><a type="button" class="btn btn-primary ml-2" href="{{url_for('detalhes', nota=item.nota)}}">Detalhes</a></td>
-
-                        <td  class="col-md-1 col-sm-2"><a type="button" class="btn btn-danger mr-2" href="{{url_for('delete', id=item.id)}}">Deletar</a></td>
-
-
-
-                    </table>
-
-                </li>
-
-                {% endfor %}
-                
-            </ul>
-
-            </div>
-            
         </div>
-
     </div>
-
 {% endblock %}

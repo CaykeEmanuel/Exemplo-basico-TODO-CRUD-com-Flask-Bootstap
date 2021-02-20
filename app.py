@@ -1,39 +1,41 @@
-from flask import Flask, render_template, request, redirect
-from sqlalchemy import create_engine, text
-import datetime
+from flask import Flask, render_template, url_for, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
-engine = create_engine("postgresql+psycopg2://postgres:maruto35170@/utilities", pool_size=10, max_overflow=20)
+db = SQLAlchemy(app)
 
-@app.route("/")
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=False, unique=True)
+    nota = db.Column(db.String(40), nullable=False)
+    descr = db.Column(db.String(400), nullable=True)
+    topico = db.Column(db.String(9), nullable=False)
+    prazo = db.Column(db.String(20), nullable=False)
+    data_pub = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+@app.route('/', methods=['GET','POST'])
 def index():
-    banco = engine.execute(text("SELECT * FROM Todo_list;"))
-    return render_template("index.html", banco=banco)
+    if request.method == 'POST':
+        nota = request.form['nota']
+        descr = request.form['descr']
+        topico = request.form['topico']
+        prazo = request.form['prazo']
+        nova_nota = Todo(nota=nota, descr=descr, topico=topico, prazo=prazo)
+        try:
+            db.session.add(nova_nota)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'erro'
 
-@app.route("/adding", methods=["POST"])
-def adding():
-    nota = request.form.get("nota")
-    descr = request.form.get("descr")
-    topico = request.form.get("topico")
-    prazo = request.form.get("prazo")
-    status = "Pendente"
-    data_registro = datetime.datetime.now()
-    engine.execute(text("INSERT INTO Todo_list (nota, descr, topico, prazo, data_registro, status) VALUES (:n, :d, :t, :p, :dt, :s);"), {'n':nota, 'd':descr, 't':topico, 'p':prazo, 'dt':data_registro,'s':status})
-    banco = engine.execute(text("SELECT * FROM Todo_list;"))
-    return render_template("index.html", banco=banco)
-
-
-@app.route("/detalhes/<nota>")
-def detalhes(nota):
-    banco = engine.execute(text("SELECT * FROM Todo_list WHERE nota=:n;"), {'n':nota}).fetchall()
-    return render_template('detalhes.html', banco=banco)
-
-@app.route("/delete/<int:id>")
-def delete(id):
-    engine.execute(text("DELETE FROM Todo_list WHERE id=:n;"), {'n':id})
-    banco = engine.execute(text("SELECT * FROM Todo_list;"))
-    return render_template('index.html', banco=banco)
+    else:
+        banco = Todo.query.order_by(Todo.data_pub).all()
+        return render_template('index.html',banco=banco)
+    
 
 
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
